@@ -8,19 +8,25 @@ public class Reminder {
     private String title;
     private String description;
     private Priority priority;
+    private boolean completed;
     private Date creationDate;
 
     public enum Priority {NONE, LOW, MEDIUM, HIGH}
 
-    public Reminder() {
-        // Default constructor
+    public Reminder(String title, Priority priority, boolean completed) {
+        this.title = title;
+        this.priority = priority;
+        this.completed = completed;
+        this.creationDate = new Date(System.currentTimeMillis());
     }
 
-    public Reminder(int id, String title, String description, Priority priority, Date creationDate) {
+    public Reminder(int id, String title, String description, Priority priority, boolean completed,
+                    Date creationDate) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.priority = priority;
+        this.completed = completed;
         this.creationDate = creationDate;
     }
 
@@ -54,6 +60,14 @@ public class Reminder {
 
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     public Date getCreationDate() {
