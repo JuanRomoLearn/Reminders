@@ -11,4 +11,8 @@
     <dimen name="keyline_1">72dp</dimen>
     <dimen name="list_row_height">56dp</dimen>
 
+    <!-- reminders -->
+    <dimen name="input_height">56dp</dimen>
+    <dimen name="input_elevation">8dp</dimen>
+
 </resources>

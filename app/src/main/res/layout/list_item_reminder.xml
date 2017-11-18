@@ -32,7 +32,6 @@
         android:layout_marginEnd="@dimen/normal_marin"
         android:layout_marginStart="@dimen/keyline_1"
         android:ellipsize="end"
-        android:scrollHorizontally="true"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="@dimen/normal_text"

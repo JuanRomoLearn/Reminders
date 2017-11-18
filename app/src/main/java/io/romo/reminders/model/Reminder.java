@@ -19,7 +19,12 @@ public class Reminder {
         NONE(R.color.no_priority),
         LOW(R.color.low_priority),
         MEDIUM(R.color.medium_priority),
-        HIGH(R.color.high_priority);
+        HIGH(R.color.high_priority) {
+            @Override
+            public Priority next() {
+                return values()[0];
+            }
+        };
 
         @ColorRes
         private int color;
@@ -31,6 +36,10 @@ public class Reminder {
         @ColorRes
         public int getColor() {
             return color;
+        }
+
+        public Priority next() {
+            return values()[ordinal() + 1];
         }
     }
 
