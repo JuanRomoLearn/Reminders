@@ -1,6 +1,10 @@
 package io.romo.reminders.model;
 
+import android.support.annotation.ColorRes;
+
 import java.util.Date;
+
+import io.romo.reminders.R;
 
 public class Reminder {
 
@@ -11,7 +15,24 @@ public class Reminder {
     private boolean completed;
     private Date creationDate;
 
-    public enum Priority {NONE, LOW, MEDIUM, HIGH}
+    public enum Priority {
+        NONE(R.color.no_priority),
+        LOW(R.color.low_priority),
+        MEDIUM(R.color.medium_priority),
+        HIGH(R.color.high_priority);
+
+        @ColorRes
+        private int color;
+
+        Priority(int color) {
+            this.color = color;
+        }
+
+        @ColorRes
+        public int getColor() {
+            return color;
+        }
+    }
 
     public Reminder(String title, Priority priority, boolean completed) {
         this.title = title;

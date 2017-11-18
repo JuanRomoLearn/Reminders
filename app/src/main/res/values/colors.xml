@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- app palette -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- general colors -->
+    <color name="black">#000000</color>
+
+    <!-- reminders -->
+    <color name="divider">#1F000000</color> <!-- 12% Black -->
+
+    <!-- prioritization colors -->
+    <color name="no_priority">#9E9E9E</color>
+    <color name="low_priority">#2196F3</color>
+    <color name="medium_priority">#FF9800</color>
+    <color name="high_priority">#F44336</color>
+
 </resources>
