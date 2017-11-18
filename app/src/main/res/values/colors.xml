@@ -2,9 +2,9 @@
 <resources>
 
     <!-- app palette -->
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#2196F3</color> <!-- md blue 500 -->
+    <color name="colorPrimaryDark">#1976D2</color> <!-- md blue 700 -->
+    <color name="colorAccent">#42A5F5</color> <!-- md blue 400 -->
 
     <!-- general colors -->
     <color name="black">#000000</color>
