@@ -18,7 +18,10 @@ package io.romo.reminders.ui.reminders;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,15 +31,21 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import io.romo.reminders.R;
+import io.romo.reminders.data.local.RemindersLocalDataSource;
 import io.romo.reminders.model.Reminder;
 import io.romo.reminders.ui.common.EmptyViewRecyclerView;
 
-public class RemindersFragment extends Fragment {
+public class RemindersFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<List<Reminder>> {
+
+    private static final int REMINDERS_LOADER = 1;
 
     @BindView(R.id.reminders) EmptyViewRecyclerView reminders;
     @BindView(R.id.empty_view) View emptyView;
@@ -63,7 +72,42 @@ public class RemindersFragment extends Fragment {
 
         priority.setTag(R.id.PRIORITY, Reminder.Priority.NONE);
 
+        getActivity().getSupportLoaderManager().initLoader(REMINDERS_LOADER, null, this);
+
         return view;
+    }
+
+    @Override
+    public Loader<List<Reminder>> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<List<Reminder>>(getActivity()) {
+
+            List<Reminder> reminderList;
+
+            @Override
+            protected void onStartLoading() {
+                if (reminderList != null) {
+                    deliverResult(reminderList);
+                } else {
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public List<Reminder> loadInBackground() {
+                return RemindersLocalDataSource.getReminders(getActivity());
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Reminder>> loader, List<Reminder> data) {
+        adapter.setReminderList(data);
+        title.setEnabled(true);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Reminder>> loader) {
+
     }
 
     @OnClick(R.id.priority)
@@ -94,7 +138,9 @@ public class RemindersFragment extends Fragment {
         Reminder reminder = new Reminder(title.getText().toString(),
                                          (Reminder.Priority) priority.getTag(R.id.PRIORITY),
                                          complete.isChecked());
-        // TODO insert reminder into database
+        RemindersLocalDataSource.addReminder(getActivity(), reminder);
+
+        adapter.addReminder(reminder);
 
         resetInput();
     }

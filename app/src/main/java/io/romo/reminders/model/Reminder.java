@@ -24,7 +24,7 @@ import io.romo.reminders.R;
 
 public class Reminder {
 
-    private int id;
+    private long id;
     private String title;
     private String description;
     private Priority priority;
@@ -66,7 +66,7 @@ public class Reminder {
         this.creationDate = new Date(System.currentTimeMillis());
     }
 
-    public Reminder(int id, String title, String description, Priority priority, boolean completed,
+    public Reminder(long id, String title, String description, Priority priority, boolean completed,
                     Date creationDate) {
         this.id = id;
         this.title = title;
@@ -76,11 +76,11 @@ public class Reminder {
         this.creationDate = creationDate;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

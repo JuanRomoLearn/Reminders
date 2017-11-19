@@ -38,6 +38,16 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         this.reminderList = reminderList;
     }
 
+    public void setReminderList(List<Reminder> reminderList) {
+        this.reminderList = reminderList;
+        notifyDataSetChanged();
+    }
+
+    public void addReminder(Reminder reminder) {
+        reminderList.add(reminder);
+        notifyItemInserted(reminderList.size() - 1);
+    }
+
     @Override
     public RemindersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -71,6 +81,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
 
         public void bindReminder(Reminder reminder) {
             this.reminder = reminder;
+            priorityStrip.setVisibility(reminder.getPriority() == Reminder.Priority.NONE ? View.INVISIBLE : View.VISIBLE);
             priorityStrip.setBackgroundResource(reminder.getPriority().getColor());
             complete.setChecked(reminder.isCompleted());
             title.setText(reminder.getTitle());
