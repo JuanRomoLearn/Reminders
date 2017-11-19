@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package io.romo.reminders.data;
+package io.romo.reminders.data.local;
 
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import io.romo.reminders.BuildConfig;
+
 public class RemindersContract {
 
-    public static final String AUTHORITY = "io.romo.reminders";
+    public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
 
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-
-    public static final String PATH_REMINDERS = "reminders";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final class ReminderEntry implements BaseColumns {
-
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_REMINDERS).build();
 
         public static final String TABLE_NAME = "reminders";
 
@@ -39,5 +37,15 @@ public class RemindersContract {
         public static final String COLUMN_PRIORITY = "priority";
         public static final String COLUMN_COMPLETED = "completed";
         public static final String COLUMN_CREATION_DATE = "creationDate";
+
+        public static final Uri CONTENT_REMINDER_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+
+        public static Uri buildReminderUriWith(long id) {
+            return ContentUris.withAppendedId(CONTENT_REMINDER_URI, id);
+        }
+
+        public static Uri buildRemindersUri() {
+            return CONTENT_REMINDER_URI.buildUpon().build();
+        }
     }
 }

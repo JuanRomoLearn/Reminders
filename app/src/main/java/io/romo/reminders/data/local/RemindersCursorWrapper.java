@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.romo.reminders.data;
+package io.romo.reminders.data.local;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
@@ -23,8 +23,6 @@ import java.util.Date;
 
 import io.romo.reminders.model.Reminder;
 
-import static io.romo.reminders.data.RemindersContract.ReminderEntry.*;
-
 public class RemindersCursorWrapper extends CursorWrapper {
 
     public RemindersCursorWrapper(Cursor cursor) {
@@ -32,12 +30,12 @@ public class RemindersCursorWrapper extends CursorWrapper {
     }
 
     public Reminder getReminder() {
-        int idIndex = getColumnIndex(_ID);
-        int titleIndex = getColumnIndex(COLUMN_TITLE);
-        int descriptionIndex = getColumnIndex(COLUMN_DESCRIPTION);
-        int priorityIndex = getColumnIndex(COLUMN_PRIORITY);
-        int completedIndex = getColumnIndex(COLUMN_COMPLETED);
-        int creationDateIndex = getColumnIndex(COLUMN_CREATION_DATE);
+        int idIndex = getColumnIndex(RemindersContract.ReminderEntry._ID);
+        int titleIndex = getColumnIndex(RemindersContract.ReminderEntry.COLUMN_TITLE);
+        int descriptionIndex = getColumnIndex(RemindersContract.ReminderEntry.COLUMN_DESCRIPTION);
+        int priorityIndex = getColumnIndex(RemindersContract.ReminderEntry.COLUMN_PRIORITY);
+        int completedIndex = getColumnIndex(RemindersContract.ReminderEntry.COLUMN_COMPLETED);
+        int creationDateIndex = getColumnIndex(RemindersContract.ReminderEntry.COLUMN_CREATION_DATE);
 
         return new Reminder(
                 getInt(idIndex),

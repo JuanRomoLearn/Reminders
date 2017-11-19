@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.romo.reminders.data;
+package io.romo.reminders.data.local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import io.romo.reminders.data.RemindersContract.ReminderEntry;
+import io.romo.reminders.data.local.RemindersContract.ReminderEntry;
 
 public class RemindersDbHelper extends SQLiteOpenHelper {
 

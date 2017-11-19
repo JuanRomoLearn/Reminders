@@ -39,7 +39,7 @@
         </activity>
 
         <provider
-            android:name=".data.RemindersContentProvider"
+            android:name=".data.RemindersProvider"
             android:authorities="io.romo.reminders"
             android:exported="false" />
 

@@ -29,7 +29,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <io.romo.reminders.ui.common.EmptyStateRecyclerView
+        <io.romo.reminders.ui.common.EmptyViewRecyclerView
             android:id="@+id/reminders"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -91,7 +91,6 @@
                 android:imeOptions="actionDone"
                 android:inputType="text|textAutoComplete|textAutoCorrect"
                 android:maxLines="1"
-                android:textColor="@color/black"
                 android:textCursorDrawable="@drawable/input_cursor"
                 android:textSize="@dimen/normal_text"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -17,28 +17,32 @@
 package io.romo.reminders.data;
 
 import android.content.ContentProvider;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
-import io.romo.reminders.data.RemindersContract.ReminderEntry;
+import io.romo.reminders.data.local.RemindersContract;
+import io.romo.reminders.data.local.RemindersDbHelper;
 
-import static io.romo.reminders.data.RemindersContract.AUTHORITY;
-import static io.romo.reminders.data.RemindersContract.PATH_REMINDERS;
-
-public class RemindersContentProvider extends ContentProvider {
+public class RemindersProvider extends ContentProvider {
 
     private static final int REMINDERS = 100;
     private static final int REMINDER_WITH_ID = 101;
 
-    private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private static final UriMatcher uriMatcher = buildUriMatcher();
 
-    static {
-        uriMatcher.addURI(AUTHORITY, PATH_REMINDERS, REMINDERS);
-        uriMatcher.addURI(AUTHORITY, PATH_REMINDERS + "/#", REMINDER_WITH_ID);
+    private static UriMatcher buildUriMatcher() {
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+        String authority = RemindersContract.CONTENT_AUTHORITY;
+
+        matcher.addURI(authority, RemindersContract.ReminderEntry.TABLE_NAME, REMINDERS);
+        matcher.addURI(authority, RemindersContract.ReminderEntry.TABLE_NAME + "/#", REMINDER_WITH_ID);
+
+        return matcher;
     }
 
     private RemindersDbHelper remindersDbHelper;
@@ -50,7 +54,12 @@ public class RemindersContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public String getType(@NonNull Uri uri) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         final SQLiteDatabase db = remindersDbHelper.getReadableDatabase();
 
@@ -58,18 +67,20 @@ public class RemindersContentProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case REMINDER_WITH_ID:
-                String id = uri.getPathSegments().get(1);
+                String _id = uri.getPathSegments().get(1);
 
-                retCursor = db.query(ReminderEntry.TABLE_NAME,
+                retCursor = db.query(
+                        RemindersContract.ReminderEntry.TABLE_NAME,
                         projection,
-                        ReminderEntry._ID + "=?",
-                        new String[]{id},
+                        RemindersContract.ReminderEntry._ID + "=?",
+                        new String[]{_id},
                         null,
                         null,
                         sortOrder);
                 break;
             case REMINDERS:
-                retCursor = db.query(ReminderEntry.TABLE_NAME,
+                retCursor = db.query(
+                        RemindersContract.ReminderEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -87,22 +98,17 @@ public class RemindersContentProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
-        return null;
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         final SQLiteDatabase db = remindersDbHelper.getWritableDatabase();
 
         Uri retUri;
 
         switch (uriMatcher.match(uri)) {
             case REMINDERS:
-                long id = db.insert(ReminderEntry.TABLE_NAME, null, values);
+                long _id = db.insert(RemindersContract.ReminderEntry.TABLE_NAME, null, values);
 
-                if (id >= 0) {
-                    retUri = ContentUris.withAppendedId(ReminderEntry.CONTENT_URI, id);
+                if (_id >= 0) {
+                    retUri = RemindersContract.ReminderEntry.buildReminderUriWith(_id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -117,17 +123,19 @@ public class RemindersContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = remindersDbHelper.getWritableDatabase();
 
         int remindersDeleted;
 
         switch (uriMatcher.match(uri)) {
             case REMINDER_WITH_ID:
-                String id = uri.getPathSegments().get(1);
+                String _id = uri.getPathSegments().get(1);
 
-                remindersDeleted = db.delete(ReminderEntry.TABLE_NAME,
-                        ReminderEntry._ID + "=?", new String[]{id});
+                remindersDeleted = db.delete(
+                        RemindersContract.ReminderEntry.TABLE_NAME,
+                        RemindersContract.ReminderEntry._ID + "=?",
+                        new String[]{_id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -141,17 +149,20 @@ public class RemindersContentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = remindersDbHelper.getWritableDatabase();
 
         int remindersUpdated;
 
         switch (uriMatcher.match(uri)) {
             case REMINDER_WITH_ID:
-                String id = uri.getPathSegments().get(1);
+                String _id = uri.getPathSegments().get(1);
 
-                remindersUpdated = db.update(ReminderEntry.TABLE_NAME, values,
-                        ReminderEntry._ID + "=?", new String[]{id});
+                remindersUpdated = db.update(
+                        RemindersContract.ReminderEntry.TABLE_NAME,
+                        values,
+                        RemindersContract.ReminderEntry._ID + "=?",
+                        new String[]{_id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

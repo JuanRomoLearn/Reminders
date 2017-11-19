@@ -34,17 +34,17 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import io.romo.reminders.R;
 import io.romo.reminders.model.Reminder;
-import io.romo.reminders.ui.common.EmptyStateRecyclerView;
+import io.romo.reminders.ui.common.EmptyViewRecyclerView;
 
 public class RemindersFragment extends Fragment {
 
-    @BindView(R.id.reminders) EmptyStateRecyclerView reminders;
+    @BindView(R.id.reminders) EmptyViewRecyclerView reminders;
     @BindView(R.id.empty_view) View emptyView;
-    private RemindersAdapter adapter;
-
     @BindView(R.id.complete) CheckBox complete;
     @BindView(R.id.title) EditText title;
     @BindView(R.id.priority) ImageView priority;
+
+    private RemindersAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

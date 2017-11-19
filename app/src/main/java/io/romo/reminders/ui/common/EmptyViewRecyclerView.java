@@ -21,11 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * Simple RecyclerView subclass that supports providing an empty view (which
- * is displayed when the adapter has no data and hidden otherwise).
- */
-public class EmptyStateRecyclerView extends RecyclerView {
+public class EmptyViewRecyclerView extends RecyclerView {
 
     private View emptyView;
 
@@ -46,22 +42,18 @@ public class EmptyStateRecyclerView extends RecyclerView {
         }
     };
 
-    public EmptyStateRecyclerView(Context context) {
+    public EmptyViewRecyclerView(Context context) {
         super(context);
     }
 
-    public EmptyStateRecyclerView(Context context, AttributeSet attrs) {
+    public EmptyViewRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public EmptyStateRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public EmptyViewRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    
-    /**
-     * Designate a view as the empty view. When the backing adapter has no
-     * data this view will be made visible and the recycler view hidden.
-     */
+
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
     }
