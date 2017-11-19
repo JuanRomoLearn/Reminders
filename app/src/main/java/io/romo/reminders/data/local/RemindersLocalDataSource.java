@@ -59,8 +59,9 @@ public class RemindersLocalDataSource {
 
     public static void updateReminder(Context context, Reminder reminder) {
         ContentValues values = ReminderUtils.getContentValuesFromReminder(reminder);
+        Uri uri = RemindersContract.ReminderEntry.buildReminderUriWith(reminder.getId());
         context.getContentResolver().update(
-                RemindersContract.ReminderEntry.buildRemindersUri(),
+                uri,
                 values,
                 null,
                 null);

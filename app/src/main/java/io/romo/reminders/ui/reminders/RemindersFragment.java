@@ -43,7 +43,7 @@ import io.romo.reminders.model.Reminder;
 import io.romo.reminders.ui.common.EmptyViewRecyclerView;
 
 public class RemindersFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<List<Reminder>> {
+        implements RemindersAdapter.ReminderItemListener, LoaderManager.LoaderCallbacks<List<Reminder>> {
 
     private static final int REMINDERS_LOADER = 1;
 
@@ -67,7 +67,7 @@ public class RemindersFragment extends Fragment
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         reminders.setLayoutManager(layoutManager);
 
-        adapter = new RemindersAdapter(null);
+        adapter = new RemindersAdapter(null, this);
         reminders.setAdapter(adapter);
 
         priority.setTag(R.id.PRIORITY, Reminder.Priority.NONE);
@@ -75,6 +75,11 @@ public class RemindersFragment extends Fragment
         getActivity().getSupportLoaderManager().initLoader(REMINDERS_LOADER, null, this);
 
         return view;
+    }
+
+    @Override
+    public void onReminderCompleted(Reminder completedReminder) {
+        RemindersLocalDataSource.updateReminder(getActivity(), completedReminder);
     }
 
     @Override

@@ -27,15 +27,23 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import io.romo.reminders.R;
 import io.romo.reminders.model.Reminder;
 
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.RemindersViewHolder> {
 
     private List<Reminder> reminderList;
+    private ReminderItemListener itemListener;
 
-    public RemindersAdapter(List<Reminder> reminderList) {
+    public interface ReminderItemListener {
+
+        void onReminderCompleted(Reminder completedReminder);
+    }
+
+    public RemindersAdapter(List<Reminder> reminderList, ReminderItemListener itemListener) {
         this.reminderList = reminderList;
+        this.itemListener = itemListener;
     }
 
     public void setReminderList(List<Reminder> reminderList) {
@@ -85,6 +93,12 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
             priorityStrip.setBackgroundResource(reminder.getPriority().getColor());
             complete.setChecked(reminder.isCompleted());
             title.setText(reminder.getTitle());
+        }
+
+        @OnCheckedChanged(R.id.complete)
+        void completeOnCheckedChanged(boolean isChecked) {
+            reminder.setCompleted(isChecked);
+            itemListener.onReminderCompleted(reminder);
         }
     }
 }
